@@ -1,0 +1,1 @@
+export const DATABASE_URL = 'https://moving-day-862e2-default-rtdb.europe-west1.firebasedatabase.app/notes.json';

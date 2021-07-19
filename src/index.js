@@ -1,17 +1,46 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import store from './store/store'
+import { Provider } from "react-redux";
+import { CssBaseline, MuiThemeProvider, responsiveFontSizes } from "@material-ui/core";
+import { createTheme } from '@material-ui/core/styles';
+
+let theme = createTheme({
+  typography: {
+    body2: {
+      fontSize: '.8em',
+    },
+    caption: {
+      fontWeight: 500,
+    },
+    subtitle1: {
+      fontWeight: 500,
+    }
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        textTransform: 'none'
+      }
+    },
+    MuiInputBase: {
+      root: {
+        fontSize: ".9em"
+      }
+    }
+  }
+});
+
+theme = responsiveFontSizes(theme);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <CssBaseline>
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <App/>
+      </MuiThemeProvider>
+    </Provider>
+  </CssBaseline>
+  , document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
