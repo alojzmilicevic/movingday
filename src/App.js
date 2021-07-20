@@ -1,6 +1,6 @@
 // @flow
 import { Container, makeStyles } from "@material-ui/core";
-import { InputForm } from "./notes/InputForm";
+import { InputForm } from "./notes/input/InputForm";
 import './style.css';
 import { ModalRoot } from "./shared/modal/Modal";
 import React, { useEffect } from "react";
@@ -19,6 +19,14 @@ const useStyles = makeStyles({
   },
 });
 
+const breakpointColumnsObj = {
+  default: 5,
+  1280: 4,
+  1000: 3,
+  800: 2,
+  460: 1,
+};
+
 function App() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -28,19 +36,10 @@ function App() {
     dispatch(init())
   }, [dispatch]);
 
-  const breakpointColumnsObj = {
-    default: 5,
-    1280: 4,
-    1000: 3,
-    800: 2,
-    460: 1,
-  };
-
   return (
     <Container maxWidth="lg">
-
-      <ModalRoot/>
       <div style={{ marginTop: 56 }}/>
+      <ModalRoot/>
       <div className={classes.content}>
         <InputForm/>
       </div>
@@ -50,12 +49,8 @@ function App() {
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column"
       >
-        {notes.map((boxes: Box[], index) => {
-          if (boxes.content.length !== 0) {
-            return <Note id={index} key={"id" + index} boxes={boxes}/>;
-          }
-          return null;
-        })}
+        {notes.map((boxes: Box[], index) => boxes.content.length !== 0 ?
+          <Note id={index} key={"id" + index} boxes={boxes}/> : null)}
       </Masonry>
     </Container>
 

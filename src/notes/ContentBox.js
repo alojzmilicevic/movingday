@@ -6,7 +6,6 @@ import {
   Typography
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { v4 } from "uuid";
 import { ModalTypes } from "../shared/modal/Modal";
 import { showModal } from "../shared/modal/store/modal.actions";
 
@@ -22,10 +21,10 @@ const useStyles = makeStyles(theme => ({
       cursor: 'pointer',
     }
   },
-  content: {
+  wrap: {
     width: "inherit",
     wordWrap: 'break-word',
-    whiteSpace: 'pre-wrap'
+    whiteSpace: 'pre-line'
   },
 }));
 
@@ -34,25 +33,32 @@ interface Props {
   parent: number,
 }
 
-// TODO: extract logic from component
-export const Box = (props: Props) => {
-  const classes = useStyles();
-  const { content, name } = props.data;
+function useBox(props) {
   const dispatch = useDispatch();
+
+  const openBoxEditModal = () => dispatch(showModal(ModalTypes.BOX_EDIT, props));
+
+  return {
+    openBoxEditModal,
+  }
+}
+
+
+/*
+* This class corresponds to one moving box.
+* */
+export const ContentBox = (props: Props) => {
+  const classes = useStyles();
+  const { content, name } = props;
+
+  const { openBoxEditModal } = useBox(props);
   return (
     <ListItem
-      onClick={() => dispatch(showModal(ModalTypes.BOX_EDIT, props))}
+      onClick={openBoxEditModal}
       className={classes.root}
     >
       <Typography variant={"caption"}> {name} </Typography>
-      <div className={classes.content}>
-        <Typography
-          key={v4()}
-          variant={"body2"}
-        >
-          {content}
-        </Typography>
-      </div>
+      <Typography className={classes.wrap} variant={"body2"}> {content} </Typography>
     </ListItem>
   )
 }

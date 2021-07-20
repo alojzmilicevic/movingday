@@ -2,7 +2,7 @@ import React  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import { makeStyles } from '@material-ui/core/styles';
-import BoxEdit from './BoxEdit';
+import ContentBoxEditModal from './ContentBoxEditModal';
 import { getBackgroundColor, getModalProps, getModalType } from "./store/modal.reducer";
 import { hideModal } from "./store/modal.actions";
 
@@ -12,7 +12,7 @@ export const ModalTypes = {
 };
 
 const ModalComponents = {
-  [ModalTypes.BOX_EDIT]: BoxEdit,
+  [ModalTypes.BOX_EDIT]: ContentBoxEditModal,
 };
 
 const useStyles = makeStyles({

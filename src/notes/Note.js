@@ -1,8 +1,7 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Card, CardHeader, Divider, makeStyles } from "@material-ui/core";
-import { Box } from "./Box";
-import { v4 } from "uuid";
+import { ContentBox } from "./ContentBox";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,29 +16,33 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   id: number,
-  boxes: Box[],
+  boxes: ContentBox[],
 }
 
-export const Note = (props: Props) => {
-  const { boxes, id } = props;
+/*
+* This class corresponds to one Note, one Note = one Room.
+* */
+export const Note = ({ boxes, id }: Props) => {
   const { title, content, color } = boxes;
   const classes = useStyles({ backgroundColor: color });
 
-  if (content.length === 0 ) return null;
+  if (content.length === 0) return null;
 
   return (
     <Card className={classes.root}>
       <CardHeader
         className={classes.cardHeader}
         title={title}
-        titleTypographyProps={{
-          variant: 'subtitle2'
-        }}
+        titleTypographyProps={{ variant: 'subtitle2' }}
       />
-      {content.map((data, index) => <React.Fragment key={v4()}>
-        <Box key={JSON.stringify(data)} data={data} parent={id} index={index}/>
-        {index !== content.length - 1 && <Divider/>}
-      </React.Fragment>)}
+      {content.map((data, index) => {
+        data.parent = id;
+        data.index = index;
+        return <Fragment key={`${index}:${id}`}>
+          <ContentBox {...data} />
+          {index !== content.length - 1 && <Divider/>}
+        </Fragment>;
+      })}
     </Card>
   )
 }
